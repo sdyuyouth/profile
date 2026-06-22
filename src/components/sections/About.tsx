@@ -12,71 +12,46 @@ export function About() {
   useGSAP(
     () => {
       if (reduced) return
-      gsap.from(".about-left", {
-        scrollTrigger: { trigger: contentRef.current, start: "top 75%" },
-        opacity: 0, x: -30, duration: 0.7, ease: "power3.out",
-      })
-      gsap.from(".about-right", {
-        scrollTrigger: { trigger: contentRef.current, start: "top 75%" },
-        opacity: 0, x: 30, duration: 0.7, ease: "power3.out", delay: 0.1,
+      gsap.from(".about-block", {
+        scrollTrigger: { trigger: contentRef.current, start: "top 78%" },
+        opacity: 0, y: 32, stagger: 0.1, duration: 0.7, ease: "power3.out",
       })
     },
     { scope: contentRef, dependencies: [reduced] },
   )
 
-  const infoItems = [
-    { label: "年龄", value: `${profile.age} 岁` },
-    { label: "籍贯", value: profile.location },
-    { label: "政治面貌", value: profile.politicalStatus },
-    { label: "邮箱", value: profile.email },
-    { label: "电话", value: profile.phone },
-  ]
-
-  const tags = ["外贸 B2B", "AI Agent", "Vibe Coding", "全栈工程", "SEO 建站", "Serverless", "RPA 自动化"]
+  const tags = ["外贸 B2B", "AI Agent", "Vibe Coding", "全栈工程", "SEO 建站", "Serverless", "RPA"]
 
   return (
-    <Section id="about" index="01" label="About" title="关于我" subtitle="从外贸业务到 AI Agent 全栈交付">
-      <div ref={contentRef} className="grid gap-12 md:grid-cols-[280px_1fr] md:gap-16">
-        <div className="about-left flex flex-col items-center md:items-start">
-          <div className="avatar-ring relative flex h-48 w-48 items-center justify-center rounded-2xl bg-[#111113]">
-            <span className="font-display text-5xl font-bold text-white">LYS</span>
-          </div>
+    <Section id="about" index="01" label="About" title="关于我">
+      <div ref={contentRef} className="space-y-8">
+        <blockquote className="about-block relative">
+          <span className="font-serif text-6xl leading-none text-white/10 md:text-7xl" aria-hidden>
+            "
+          </span>
+          <p className="-mt-8 font-serif text-xl leading-[1.75] text-neutral-300 md:text-2xl md:leading-[1.75]">
+            {profile.summary}
+          </p>
+        </blockquote>
 
-          <div className="mt-8 w-full overflow-hidden rounded-xl glass-card">
-            {infoItems.map((item, i) => (
-              <div
-                key={item.label}
-                className={`flex justify-between px-4 py-3 text-sm ${
-                  i !== infoItems.length - 1 ? "border-b border-white/[0.06]" : ""
-                }`}
-              >
-                <span className="font-mono text-[11px] tracking-wider text-zinc-600 uppercase">
-                  {item.label}
-                </span>
-                <span className="text-zinc-300">{item.value}</span>
-              </div>
-            ))}
-          </div>
+        <div className="about-block flex flex-wrap gap-2 border-y border-white/[0.06] py-6">
+          {tags.map((tag) => (
+            <span key={tag} className="tag-pill">{tag}</span>
+          ))}
         </div>
 
-        <div className="about-right">
-          <blockquote className="relative border-l border-white/15 pl-6">
-            <p className="text-lg leading-[1.85] text-zinc-300 md:text-xl">
-              {profile.summary}
-            </p>
-          </blockquote>
-
-          <div className="mt-10">
-            <p className="font-mono mb-4 text-[10px] tracking-widest text-zinc-600 uppercase">
-              Core Focus
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {tags.map((tag) => (
-                <span key={tag} className="tag-pill">{tag}</span>
-              ))}
+        <dl className="about-block grid grid-cols-2 gap-px overflow-hidden rounded-sm bg-white/[0.06] sm:grid-cols-3">
+          {[
+            { label: "邮箱", value: profile.email },
+            { label: "电话", value: profile.phone },
+            { label: "GitHub", value: "sdyuyouth" },
+          ].map(({ label, value }) => (
+            <div key={label} className="bg-[#080808] p-4 md:p-5">
+              <dt className="font-mono text-[10px] tracking-widest text-neutral-600 uppercase">{label}</dt>
+              <dd className="mt-2 truncate text-sm text-neutral-300">{value}</dd>
             </div>
-          </div>
-        </div>
+          ))}
+        </dl>
       </div>
     </Section>
   )

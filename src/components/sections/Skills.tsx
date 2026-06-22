@@ -7,56 +7,58 @@ import { useReducedMotion } from "@/hooks/useReducedMotion"
 
 const skillGroups = [
   { key: "agent" as const, label: "Agent / AI" },
-  { key: "fullstack" as const, label: "全栈工程" },
-  { key: "automation" as const, label: "自动化 / RPA" },
-  { key: "seo" as const, label: "SEO / Cloudflare" },
+  { key: "fullstack" as const, label: "全栈" },
+  { key: "automation" as const, label: "自动化" },
+  { key: "seo" as const, label: "SEO / CF" },
 ]
 
 export function Skills() {
-  const gridRef = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLDivElement>(null)
   const reduced = useReducedMotion()
+  const allSkills = Object.values(profile.skills).flat()
 
   useGSAP(
     () => {
       if (reduced) return
-      gsap.from(".skill-bento", {
-        scrollTrigger: { trigger: gridRef.current, start: "top 80%" },
-        opacity: 0, y: 30, stagger: 0.08, duration: 0.6,
+      gsap.from(".skill-col", {
+        scrollTrigger: { trigger: ref.current, start: "top 80%" },
+        opacity: 0, y: 24, stagger: 0.08, duration: 0.6,
       })
     },
-    { scope: gridRef, dependencies: [reduced] },
+    { scope: ref, dependencies: [reduced] },
   )
 
   return (
-    <Section id="skills" index="05" label="Skills" title="技能栈" subtitle="Vibe Coding 全链路覆盖">
-      <div ref={gridRef} className="grid gap-3 sm:grid-cols-2">
-        {skillGroups.map(({ key, label }) => (
-          <div key={key} className="skill-bento glass-card rounded-xl p-5">
-            <h3 className="mb-4 font-mono text-[10px] tracking-widest text-zinc-500 uppercase">
-              {label}
-            </h3>
-            <div className="flex flex-wrap gap-1.5">
-              {profile.skills[key].map((skill) => (
-                <span
-                  key={skill}
-                  className="rounded-md bg-white/[0.03] px-2.5 py-1 font-mono text-xs text-zinc-400 ring-1 ring-white/[0.05] transition hover:text-zinc-200"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
+    <Section id="skills" index="05" label="Skills" title="技能栈">
+      <div ref={ref}>
+        <div className="marquee-wrap mb-8 border-y border-white/[0.06] py-4">
+          <div className="marquee-track gap-10">
+            {[...allSkills, ...allSkills].map((s, i) => (
+              <span key={`${s}-${i}`} className="shrink-0 font-serif text-lg text-white/25 md:text-xl">
+                {s}
+              </span>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
 
-      <div className="skill-bento mt-3 glass-card rounded-xl p-5 md:p-6">
-        <h3 className="mb-4 font-mono text-[10px] tracking-widest text-zinc-600 uppercase">
-          Honors & Certifications
-        </h3>
-        <div className="flex flex-wrap gap-x-5 gap-y-2">
-          {profile.honors.map((honor) => (
-            <span key={honor} className="text-sm text-zinc-500">{honor}</span>
+        <div className="grid gap-px overflow-hidden rounded-sm bg-white/[0.06] sm:grid-cols-2">
+          {skillGroups.map(({ key, label }) => (
+            <div key={key} className="skill-col bg-[#080808] p-5 md:p-6">
+              <h3 className="font-mono text-[10px] tracking-[0.25em] text-neutral-600 uppercase">{label}</h3>
+              <ul className="mt-4 space-y-2">
+                {profile.skills[key].map((skill) => (
+                  <li key={skill} className="text-sm text-neutral-400">{skill}</li>
+                ))}
+              </ul>
+            </div>
           ))}
+        </div>
+
+        <div className="skill-col mt-4 border border-white/[0.06] p-5 md:p-6">
+          <h3 className="font-mono text-[10px] tracking-[0.25em] text-neutral-600 uppercase">荣誉</h3>
+          <p className="mt-4 text-sm leading-loose text-neutral-500">
+            {profile.honors.join(" · ")}
+          </p>
         </div>
       </div>
     </Section>

@@ -8,34 +8,40 @@ type SectionProps = {
   subtitle?: string
   children: ReactNode
   className?: string
+  asideExtra?: ReactNode
 }
 
 export function Section({
-  id, index, label, title, subtitle, children, className = "",
+  id,
+  index,
+  label,
+  title,
+  subtitle,
+  children,
+  className = "",
+  asideExtra,
 }: SectionProps) {
   return (
-    <section id={id} className={`relative px-5 py-28 md:px-10 lg:px-16 ${className}`}>
-      <div className="relative mx-auto max-w-6xl">
-        <div className="section-reveal relative mb-14 md:mb-20">
-          <span className="section-index absolute -top-6 -left-2 md:-top-10 md:-left-4" aria-hidden>
-            {index}
-          </span>
-          <div className="relative">
-            <div className="mb-4 flex items-center gap-3">
-              <span className="section-label">{label}</span>
-              <span className="h-px flex-1 max-w-[60px] bg-white/10" />
-            </div>
-            <h2 className="font-display text-3xl font-semibold tracking-tight text-white md:text-4xl lg:text-5xl">
-              {title}
-            </h2>
+    <section id={id} className={`py-20 md:py-28 lg:py-32 ${className}`}>
+      <div className="page-shell">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,17rem)_1fr] lg:gap-16 xl:gap-24">
+          <aside className="section-aside">
+            <span className="section-index-big" aria-hidden>
+              {index}
+            </span>
+            <p className="section-label">{label}</p>
+            <h2 className="section-heading mt-3">{title}</h2>
             {subtitle && (
-              <p className="mt-4 max-w-xl text-base leading-relaxed text-zinc-500 md:text-lg">
+              <p className="mt-4 text-sm leading-relaxed text-neutral-500 md:text-base">
                 {subtitle}
               </p>
             )}
-          </div>
+            {asideExtra && <div className="mt-6 hidden lg:block">{asideExtra}</div>}
+            <div className="divider-rule mt-8 hidden lg:block" />
+          </aside>
+
+          <div className="min-w-0">{children}</div>
         </div>
-        {children}
       </div>
     </section>
   )

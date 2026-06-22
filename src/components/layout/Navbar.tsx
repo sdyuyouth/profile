@@ -11,65 +11,40 @@ const links = [
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
-  const [active, setActive] = useState("")
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60)
+    const onScroll = () => setScrolled(window.scrollY > 48)
     window.addEventListener("scroll", onScroll, { passive: true })
-
-    const sections = links.map((l) => document.querySelector(l.href))
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive(`#${e.target.id}`)
-        })
-      },
-      { rootMargin: "-40% 0px -55% 0px" },
-    )
-    sections.forEach((s) => s && observer.observe(s))
-
-    return () => {
-      window.removeEventListener("scroll", onScroll)
-      observer.disconnect()
-    }
+    return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
   return (
-    <header className="fixed top-0 z-50 w-full px-4 pt-4 md:px-6">
-      <nav
-        className={`mx-auto flex max-w-4xl items-center justify-between rounded-2xl px-5 py-3 transition-all duration-500 ${
-          scrolled
-            ? "border border-white/[0.06] bg-[#09090b]/85 shadow-lg shadow-black/20 backdrop-blur-xl"
-            : "bg-transparent"
-        }`}
-      >
-        <a href="#" className="font-display text-sm font-semibold tracking-tight text-white">
-          LYS<span className="text-zinc-500">.</span>
+    <header
+      className={`fixed top-0 z-50 w-full transition-colors duration-300 ${
+        scrolled ? "border-b border-white/[0.06] bg-[#080808]/90 backdrop-blur-md" : "bg-transparent"
+      }`}
+    >
+      <div className="page-shell flex h-14 items-center justify-between md:h-16">
+        <a href="#" className="font-serif text-sm font-bold tracking-tight text-white">
+          鲁越森
         </a>
 
-        <div className="hidden items-center gap-0.5 md:flex">
+        <nav className="hidden items-center gap-6 md:flex">
           {links.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className={`relative rounded-lg px-3 py-1.5 text-xs font-medium transition-all duration-200 ${
-                active === link.href
-                  ? "bg-white/[0.06] text-white"
-                  : "text-zinc-500 hover:text-zinc-300"
-              }`}
+              className="font-mono text-[10px] tracking-[0.15em] text-neutral-600 uppercase transition hover:text-white"
             >
               {link.label}
             </a>
           ))}
-        </div>
+        </nav>
 
-        <a
-          href="#contact"
-          className="hidden rounded-lg border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs font-medium text-zinc-300 transition hover:bg-white/[0.08] hover:text-white md:block"
-        >
-          联系我
+        <a href="#contact" className="btn-primary py-2 text-[11px] md:py-2.5">
+          联系
         </a>
-      </nav>
+      </div>
     </header>
   )
 }
