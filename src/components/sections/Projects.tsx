@@ -17,15 +17,8 @@ export function Projects() {
     () => {
       if (reduced) return
       gsap.from(".project-card", {
-        scrollTrigger: {
-          trigger: gridRef.current,
-          start: "top 80%",
-        },
-        opacity: 0,
-        y: 50,
-        stagger: 0.1,
-        duration: 0.7,
-        ease: "power2.out",
+        scrollTrigger: { trigger: gridRef.current, start: "top 80%" },
+        opacity: 0, y: 60, stagger: 0.12, duration: 0.8, ease: "power3.out",
       })
     },
     { scope: gridRef, dependencies: [reduced] },
@@ -34,11 +27,12 @@ export function Projects() {
   return (
     <Section
       id="projects"
+      index="04"
       label="Projects"
       title="精选项目"
-      subtitle="从 D:\code 60+ 项目中筛选，与小满三岗对口展示"
+      subtitle="外贸 B2B · AI Agent · 独立站 SEO"
     >
-      <div ref={gridRef} className="grid gap-6 md:grid-cols-2">
+      <div ref={gridRef} className="grid gap-5 md:grid-cols-2">
         {projects.map((project) => (
           <ProjectCard
             key={project.id}

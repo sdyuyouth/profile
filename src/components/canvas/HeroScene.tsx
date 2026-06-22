@@ -1,81 +1,98 @@
 import { Suspense, useRef } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
-import { Float, MeshDistortMaterial, Stars } from "@react-three/drei"
-import type { Mesh } from "three"
+import { Float, MeshDistortMaterial, Sparkles, TorusKnot } from "@react-three/drei"
+import type { Group, Mesh } from "three"
 
-function DistortedSphere() {
-  const meshRef = useRef<Mesh>(null)
+function CoreShape() {
+  const groupRef = useRef<Group>(null)
 
   useFrame((state) => {
-    if (!meshRef.current) return
-    meshRef.current.rotation.x = state.clock.elapsedTime * 0.08
-    meshRef.current.rotation.y = state.clock.elapsedTime * 0.12
+    if (!groupRef.current) return
     const { x, y } = state.pointer
-    meshRef.current.rotation.x += y * 0.15
-    meshRef.current.rotation.y += x * 0.15
+    groupRef.current.rotation.y = state.clock.elapsedTime * 0.15 + x * 0.4
+    groupRef.current.rotation.x = y * 0.3
   })
 
   return (
-    <Float speed={1.5} rotationIntensity={0.4} floatIntensity={1.2}>
-      <mesh ref={meshRef} scale={2.2}>
-        <icosahedronGeometry args={[1, 4]} />
-        <MeshDistortMaterial
-          color="#22d3ee"
-          emissive="#1a1033"
-          roughness={0.2}
-          metalness={0.8}
-          distort={0.35}
-          speed={2}
-          wireframe
-        />
-      </mesh>
-    </Float>
+    <group ref={groupRef}>
+      <Float speed={2} rotationIntensity={0.6} floatIntensity={1.5}>
+        <TorusKnot args={[1.1, 0.32, 128, 16]}>
+          <MeshDistortMaterial
+            color="#00f0ff"
+            emissive="#001a33"
+            emissiveIntensity={0.8}
+            roughness={0.1}
+            metalness={0.9}
+            distort={0.25}
+            speed={3}
+            wireframe
+          />
+        </TorusKnot>
+      </Float>
+
+      <Float speed={1.2} rotationIntensity={0.3} floatIntensity={0.6}>
+        <mesh scale={0.55}>
+          <icosahedronGeometry args={[1, 1]} />
+          <meshStandardMaterial
+            color="#7b2fff"
+            emissive="#2d0055"
+            emissiveIntensity={1.2}
+            transparent
+            opacity={0.5}
+            wireframe
+          />
+        </mesh>
+      </Float>
+    </group>
   )
 }
 
-function InnerSphere() {
+function OrbitingParticles() {
+  const ref = useRef<Mesh>(null)
+  useFrame((state) => {
+    if (ref.current) ref.current.rotation.y = state.clock.elapsedTime * 0.05
+  })
   return (
-    <Float speed={2} rotationIntensity={0.2} floatIntensity={0.8}>
-      <mesh scale={1.2}>
-        <sphereGeometry args={[0.6, 32, 32]} />
-        <meshStandardMaterial
-          color="#a855f7"
-          emissive="#2d1b4e"
-          emissiveIntensity={0.5}
-          transparent
-          opacity={0.35}
-        />
-      </mesh>
-    </Float>
+    <group ref={ref}>
+      <Sparkles count={120} scale={8} size={2} speed={0.3} color="#00f0ff" opacity={0.6} />
+      <Sparkles count={80} scale={6} size={1.5} speed={0.5} color="#bf00ff" opacity={0.4} />
+    </group>
   )
 }
 
 function Scene() {
   return (
     <>
-      <ambientLight intensity={0.3} />
-      <pointLight position={[10, 10, 10]} intensity={1.2} color="#22d3ee" />
-      <pointLight position={[-10, -5, -5]} intensity={0.8} color="#a855f7" />
-      <Stars radius={80} depth={40} count={2000} factor={3} saturation={0} fade speed={0.5} />
-      <DistortedSphere />
-      <InnerSphere />
+      <ambientLight intensity={0.2} />
+      <pointLight position={[8, 8, 8]} intensity={2} color="#00f0ff" />
+      <pointLight position={[-8, -4, 4]} intensity={1.5} color="#7b2fff" />
+      <pointLight position={[0, -8, 0]} intensity={0.8} color="#ff006e" />
+      <CoreShape />
+      <OrbitingParticles />
     </>
   )
 }
 
 export function HeroScene() {
   return (
-    <div className="absolute inset-0 -z-10 opacity-70">
+    <div className="absolute inset-0 -z-10">
       <Canvas
-        camera={{ position: [0, 0, 6], fov: 45 }}
+        camera={{ position: [0, 0, 5.5], fov: 50 }}
         dpr={[1, 1.5]}
-        gl={{ antialias: true, alpha: true }}
+        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+        style={{ background: "transparent" }}
       >
         <Suspense fallback={null}>
           <Scene />
         </Suspense>
       </Canvas>
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050508]/40 to-[#050508]" />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 50% at 50% 50%, transparent 0%, #030014 75%)",
+        }}
+      />
     </div>
   )
 }

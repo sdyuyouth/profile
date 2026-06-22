@@ -13,69 +13,74 @@ export function Experience() {
     () => {
       if (reduced) return
       gsap.from(".exp-item", {
-        scrollTrigger: {
-          trigger: timelineRef.current,
-          start: "top 75%",
-        },
-        opacity: 0,
-        x: -30,
-        stagger: 0.15,
-        duration: 0.7,
-        ease: "power2.out",
+        scrollTrigger: { trigger: timelineRef.current, start: "top 75%" },
+        opacity: 0, x: -40, stagger: 0.18, duration: 0.8, ease: "power3.out",
       })
     },
     { scope: timelineRef, dependencies: [reduced] },
   )
 
   return (
-    <Section id="experience" label="Experience" title="工作经历" subtitle="外贸 · Agent · 建站 · 全栈">
-      <div ref={timelineRef} className="relative space-y-0">
-        <div className="absolute left-[7px] top-2 bottom-2 w-px bg-gradient-to-b from-cyan-500/50 via-purple-500/30 to-transparent md:left-[11px]" />
+    <Section
+      id="experience"
+      index="03"
+      label="Experience"
+      title="工作经历"
+      subtitle="外贸 · Agent · 建站 · 全栈"
+    >
+      <div ref={timelineRef} className="relative">
+        <div className="absolute left-[11px] top-3 bottom-3 w-px bg-gradient-to-b from-cyan-400/60 via-purple-500/40 to-transparent md:left-[15px]" />
 
-        {profile.experience.map((exp, i) => (
-          <div
-            key={exp.id}
-            className={`exp-item relative pb-12 pl-8 md:pl-12 ${
-              i !== profile.experience.length - 1 ? "" : "pb-0"
-            }`}
-          >
-            <div className="absolute left-0 top-1.5 h-4 w-4 rounded-full border-2 border-cyan-400 bg-[#050508] md:h-5 md:w-5" />
-
-            <div className="glass-card rounded-xl p-5 md:p-6">
-              <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <div>
-                  <h3 className="font-display text-lg font-semibold text-white">{exp.role}</h3>
-                  <p className="text-sm text-cyan-400/80">{exp.company}</p>
-                </div>
-                <span className="text-xs text-slate-500">{exp.period}</span>
+        <div className="space-y-8">
+          {profile.experience.map((exp, i) => (
+            <div key={exp.id} className="exp-item relative pl-10 md:pl-14">
+              <div className="timeline-node absolute left-0 top-5 h-6 w-6 rounded-full border-2 border-cyan-400 bg-[#030014] md:h-7 md:w-7">
+                <div className="absolute inset-1 rounded-full bg-cyan-400/20" />
               </div>
 
-              <ul className="mt-4 space-y-2">
-                {exp.highlights.map((h) => (
-                  <li key={h} className="text-sm leading-relaxed text-slate-400">
-                    {h}
-                  </li>
-                ))}
-              </ul>
-
-              {"links" in exp && exp.links && (
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {exp.links.map((link) => (
-                    <a
-                      key={link.url}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="rounded-md bg-white/5 px-2.5 py-1 text-xs text-slate-400 transition hover:bg-cyan-400/10 hover:text-cyan-400"
-                    >
-                      {link.label} ↗
-                    </a>
-                  ))}
+              <div className="glass-card rounded-2xl p-6 md:p-7 transition hover:border-white/12">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <span className="font-mono text-[10px] tracking-widest text-white/30">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <h3 className="font-display mt-1 text-xl font-bold text-white">{exp.role}</h3>
+                    <p className="mt-1 text-sm text-cyan-400/80">{exp.company}</p>
+                  </div>
+                  <span className="rounded-full bg-white/5 px-3 py-1 font-mono text-[10px] text-white/40 ring-1 ring-white/8">
+                    {exp.period}
+                  </span>
                 </div>
-              )}
+
+                <ul className="mt-5 space-y-2.5">
+                  {exp.highlights.map((h) => (
+                    <li key={h} className="flex gap-2.5 text-sm leading-relaxed text-white/50">
+                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-cyan-400/60" />
+                      {h}
+                    </li>
+                  ))}
+                </ul>
+
+                {"links" in exp && exp.links && (
+                  <div className="mt-5 flex flex-wrap gap-2 border-t border-white/5 pt-5">
+                    {exp.links.map((link) => (
+                      <a
+                        key={link.url}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        data-cursor
+                        className="rounded-lg bg-white/4 px-3 py-1.5 font-mono text-[10px] text-white/45 ring-1 ring-white/8 transition hover:bg-cyan-400/8 hover:text-cyan-400 hover:ring-cyan-400/30"
+                      >
+                        {link.label} ↗
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </Section>
   )

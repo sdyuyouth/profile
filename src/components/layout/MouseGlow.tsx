@@ -1,23 +1,26 @@
-import { useReducedMotion } from "@/hooks/useReducedMotion"
+import { useReducedMotion, useIsMobile } from "@/hooks/useReducedMotion"
 import { useMousePosition } from "@/hooks/useMouseGlow"
 
 export function MouseGlow() {
   const { x, y } = useMousePosition()
   const reduced = useReducedMotion()
+  const mobile = useIsMobile()
 
-  if (reduced) return null
+  if (reduced || mobile) return null
 
   return (
-    <div
-      className="pointer-events-none fixed inset-0 z-30 mix-blend-screen"
-      aria-hidden
-    >
+    <div className="pointer-events-none fixed inset-0 z-[1] mix-blend-screen" aria-hidden>
       <div
-        className="absolute h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-20 blur-3xl transition-transform duration-75"
+        className="absolute rounded-full"
         style={{
           left: x,
           top: y,
-          background: "radial-gradient(circle, #22d3ee 0%, #a855f7 50%, transparent 70%)",
+          width: 500,
+          height: 500,
+          transform: "translate(-50%, -50%)",
+          background:
+            "radial-gradient(circle, rgba(0,240,255,0.08) 0%, rgba(123,47,255,0.05) 40%, transparent 70%)",
+          transition: "left 0.08s linear, top 0.08s linear",
         }}
       />
     </div>

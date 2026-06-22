@@ -2,6 +2,8 @@ import { useState } from "react"
 import type { PositionRelevance } from "@/data/idealPositions"
 import { PositionContext } from "@/context/PositionContext"
 import { useLenis } from "@/hooks/useLenis"
+import { AmbientBackground } from "@/components/layout/AmbientBackground"
+import { CustomCursor } from "@/components/layout/CustomCursor"
 import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { MouseGlow } from "@/components/layout/MouseGlow"
@@ -18,6 +20,9 @@ function AppContent() {
 
   return (
     <>
+      <AmbientBackground />
+      <div className="noise-overlay" aria-hidden />
+      <CustomCursor />
       <MouseGlow />
       <Navbar />
       <main>

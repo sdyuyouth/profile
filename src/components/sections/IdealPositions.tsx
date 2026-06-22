@@ -23,16 +23,14 @@ export function IdealPositions() {
       return
     }
     gsap.to(detailRef.current, {
-      opacity: 0,
-      y: 10,
-      duration: 0.2,
+      opacity: 0, y: 12, duration: 0.18,
       onComplete: () => {
         setSelectedId(id)
         setActivePositionId(id)
         gsap.fromTo(
           detailRef.current,
-          { opacity: 0, y: -10, rotateX: 5 },
-          { opacity: 1, y: 0, rotateX: 0, duration: 0.4, ease: "power2.out" },
+          { opacity: 0, y: -12 },
+          { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" },
         )
       },
     })
@@ -43,10 +41,7 @@ export function IdealPositions() {
       if (reduced) return
       gsap.from(".position-tab", {
         scrollTrigger: { trigger: "#ideal-positions", start: "top 75%" },
-        opacity: 0,
-        y: 30,
-        stagger: 0.1,
-        duration: 0.6,
+        opacity: 0, x: -30, stagger: 0.1, duration: 0.6,
       })
     },
     { dependencies: [reduced] },
@@ -55,42 +50,51 @@ export function IdealPositions() {
   return (
     <Section
       id="ideal-positions"
+      index="02"
       label="Target Roles"
       title="理想职位"
-      subtitle="小满科技 · 按优先级排序，改 idealPositions.ts 即可调整"
+      subtitle="小满科技 · Vibe Coding 优先"
     >
-      <div className="flex flex-col gap-8 lg:flex-row">
-        <div className="flex flex-col gap-3 lg:w-80">
+      <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
+        <div className="flex flex-col gap-3 lg:w-72 shrink-0">
           {positions.map((pos) => {
             const isActive = pos.id === selectedId
-            const scale = pos.priority === 1 ? "lg:scale-100" : pos.priority === 2 ? "lg:scale-[0.98]" : "lg:scale-[0.96]"
-            const opacity = pos.priority === 1 ? "opacity-100" : pos.priority === 2 ? "opacity-90" : "opacity-80"
+            const priorityStyles = [
+              "opacity-100 scale-100",
+              "opacity-85 scale-[0.98]",
+              "opacity-70 scale-[0.96]",
+            ]
 
             return (
               <button
                 key={pos.id}
                 type="button"
+                data-cursor
                 onClick={() => handleSelect(pos.id as PositionRelevance)}
-                className={`position-tab text-left rounded-xl p-4 transition-all duration-300 ${scale} ${opacity} ${
+                className={`position-tab text-left rounded-2xl p-5 transition-all duration-300 ${priorityStyles[pos.priority - 1]} ${
                   isActive ? "glass-card-highlight" : "glass-card hover:border-white/15"
                 }`}
               >
-                <div className="mb-2 flex items-center gap-2">
+                <div className="mb-3 flex items-center gap-2.5">
                   <span
-                    className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold ${
+                    className={`flex h-7 w-7 items-center justify-center rounded-lg font-display text-xs font-bold ${
                       pos.priority === 1
-                        ? "bg-gradient-to-r from-cyan-500 to-purple-500 text-white"
-                        : "bg-white/10 text-slate-400"
+                        ? "bg-gradient-to-br from-cyan-400 to-purple-500 text-white shadow-[0_0_16px_rgba(0,240,255,0.4)]"
+                        : "bg-white/8 text-white/50"
                     }`}
                   >
-                    #{pos.priority}
+                    0{pos.priority}
                   </span>
                   {pos.salary && (
-                    <span className="text-xs text-cyan-400/80">{pos.salary}</span>
+                    <span className="font-mono text-[10px] text-cyan-400/80">{pos.salary}</span>
                   )}
                 </div>
-                <h3 className="font-display text-base font-semibold text-white">{pos.title}</h3>
-                <p className="mt-1 text-xs text-slate-500">{pos.company}{pos.location ? ` · ${pos.location}` : ""}</p>
+                <h3 className="font-display text-sm font-bold leading-snug text-white">
+                  {pos.title}
+                </h3>
+                <p className="mt-1.5 font-mono text-[10px] text-white/35">
+                  {pos.company}{pos.location ? ` · ${pos.location}` : ""}
+                </p>
               </button>
             )
           })}
@@ -98,33 +102,34 @@ export function IdealPositions() {
 
         <div
           ref={detailRef}
-          className="glass-card-highlight flex-1 rounded-2xl p-6 md:p-8"
-          style={{ transformStyle: "preserve-3d" }}
+          className="glass-card-highlight flex-1 rounded-2xl p-7 md:p-9"
         >
-          <p className="text-sm text-slate-400">{selected.tagline}</p>
+          <p className="text-base leading-relaxed text-white/55">{selected.tagline}</p>
 
           <div className="mt-8 grid gap-8 md:grid-cols-2">
             <div>
-              <h4 className="mb-4 font-display text-sm font-semibold tracking-wider text-cyan-400 uppercase">
+              <h4 className="mb-5 flex items-center gap-2 font-mono text-[10px] tracking-widest text-cyan-400 uppercase">
+                <span className="h-px w-4 bg-cyan-400/60" />
                 岗位亮点
               </h4>
               <ul className="space-y-3">
                 {selected.highlights.map((h) => (
-                  <li key={h} className="flex gap-2 text-sm text-slate-300">
-                    <span className="text-cyan-400">▸</span>
+                  <li key={h} className="flex gap-3 text-sm leading-relaxed text-white/65">
+                    <span className="mt-0.5 shrink-0 font-mono text-cyan-400">→</span>
                     {h}
                   </li>
                 ))}
               </ul>
             </div>
             <div>
-              <h4 className="mb-4 font-display text-sm font-semibold tracking-wider text-purple-400 uppercase">
+              <h4 className="mb-5 flex items-center gap-2 font-mono text-[10px] tracking-widest text-purple-400 uppercase">
+                <span className="h-px w-4 bg-purple-400/60" />
                 我的匹配
               </h4>
               <ul className="space-y-3">
                 {selected.matchPoints.map((m) => (
-                  <li key={m} className="flex gap-2 text-sm text-slate-300">
-                    <span className="text-purple-400">✓</span>
+                  <li key={m} className="flex gap-3 text-sm leading-relaxed text-white/65">
+                    <span className="mt-0.5 shrink-0 text-purple-400">✓</span>
                     {m}
                   </li>
                 ))}
@@ -135,9 +140,10 @@ export function IdealPositions() {
           <div className="mt-8 border-t border-white/5 pt-6">
             <a
               href="mailto:jobs@xiaoman.cn"
-              className="inline-flex items-center gap-2 text-sm text-cyan-400 transition hover:text-cyan-300"
+              className="btn-ghost text-xs"
+              data-cursor
             >
-              投递小满 → jobs@xiaoman.cn
+              投递小满 · jobs@xiaoman.cn
             </a>
           </div>
         </div>

@@ -12,16 +12,13 @@ export function About() {
   useGSAP(
     () => {
       if (reduced) return
-      gsap.from(contentRef.current, {
-        scrollTrigger: {
-          trigger: contentRef.current,
-          start: "top 80%",
-          end: "top 30%",
-          scrub: 1,
-        },
-        filter: "blur(8px)",
-        opacity: 0.3,
-        y: 40,
+      gsap.from(".about-left", {
+        scrollTrigger: { trigger: contentRef.current, start: "top 75%" },
+        opacity: 0, x: -40, duration: 0.8, ease: "power3.out",
+      })
+      gsap.from(".about-right", {
+        scrollTrigger: { trigger: contentRef.current, start: "top 75%" },
+        opacity: 0, x: 40, duration: 0.8, ease: "power3.out", delay: 0.15,
       })
     },
     { scope: contentRef, dependencies: [reduced] },
@@ -35,43 +32,63 @@ export function About() {
     { label: "电话", value: profile.phone },
   ]
 
+  const tags = ["外贸 B2B", "AI Agent", "Vibe Coding", "全栈工程", "SEO 建站", "Serverless", "RPA 自动化"]
+
   return (
-    <Section id="about" label="About" title="关于我" subtitle="从外贸业务到 AI Agent 全栈交付">
-      <div ref={contentRef} className="grid gap-10 md:grid-cols-[280px_1fr] md:gap-16">
-        <div className="flex flex-col items-center md:items-start">
-          <div className="glass-card-highlight relative flex h-48 w-48 items-center justify-center rounded-2xl">
-            <div className="font-display text-5xl font-bold gradient-text">LYS</div>
-            <div className="absolute -inset-1 -z-10 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 blur-xl" />
+    <Section
+      id="about"
+      index="01"
+      label="About"
+      title="关于我"
+      subtitle="从外贸业务到 AI Agent 全栈交付"
+    >
+      <div ref={contentRef} className="grid gap-12 md:grid-cols-[300px_1fr] md:gap-20">
+        <div className="about-left flex flex-col items-center md:items-start">
+          <div className="avatar-ring relative flex h-52 w-52 items-center justify-center rounded-3xl bg-[#030014]">
+            <div className="relative flex h-[calc(100%-6px)] w-[calc(100%-6px)] items-center justify-center rounded-[22px] bg-[#0a0520]">
+              <span className="font-display text-6xl font-black gradient-text">LYS</span>
+              <div
+                className="absolute inset-0 rounded-[22px] opacity-30"
+                style={{
+                  background: "radial-gradient(circle at 30% 30%, rgba(0,240,255,0.2), transparent 60%)",
+                }}
+              />
+            </div>
           </div>
-          <div className="mt-6 w-full space-y-3">
-            {infoItems.map((item) => (
-              <div key={item.label} className="flex justify-between border-b border-white/5 pb-2 text-sm">
-                <span className="text-slate-500">{item.label}</span>
-                <span className="text-slate-300">{item.value}</span>
+
+          <div className="mt-8 w-full space-y-0 overflow-hidden rounded-2xl glass-card">
+            {infoItems.map((item, i) => (
+              <div
+                key={item.label}
+                className={`flex justify-between px-4 py-3 text-sm ${
+                  i !== infoItems.length - 1 ? "border-b border-white/5" : ""
+                }`}
+              >
+                <span className="font-mono text-[11px] tracking-wider text-white/35 uppercase">
+                  {item.label}
+                </span>
+                <span className="text-white/75">{item.value}</span>
               </div>
             ))}
           </div>
         </div>
 
-        <div>
-          <p className="text-lg leading-relaxed text-slate-300 md:text-xl">{profile.summary}</p>
-          <div className="mt-8 flex flex-wrap gap-2">
-            {[
-              "外贸 B2B",
-              "AI Agent",
-              "Vibe Coding",
-              "全栈工程",
-              "SEO 建站",
-              "Serverless",
-              "RPA 自动化",
-            ].map((tag) => (
-              <span
-                key={tag}
-                className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-400"
-              >
-                {tag}
-              </span>
-            ))}
+        <div className="about-right">
+          <blockquote className="relative border-l-2 border-cyan-400/40 pl-6">
+            <p className="text-xl leading-[1.8] text-white/75 md:text-2xl md:leading-[1.8]">
+              {profile.summary}
+            </p>
+          </blockquote>
+
+          <div className="mt-10">
+            <p className="font-mono mb-4 text-[10px] tracking-widest text-white/30 uppercase">
+              Core Focus
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {tags.map((tag) => (
+                <span key={tag} className="tag-pill">{tag}</span>
+              ))}
+            </div>
           </div>
         </div>
       </div>
