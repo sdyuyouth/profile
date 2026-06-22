@@ -39,42 +39,33 @@ export function Navbar() {
       <nav
         className={`mx-auto flex max-w-4xl items-center justify-between rounded-2xl px-5 py-3 transition-all duration-500 ${
           scrolled
-            ? "border border-white/8 bg-[#030014]/80 shadow-[0_8px_32px_rgba(0,0,0,0.5)] backdrop-blur-2xl"
+            ? "border border-white/[0.06] bg-[#09090b]/85 shadow-lg shadow-black/20 backdrop-blur-xl"
             : "bg-transparent"
         }`}
       >
-        <a
-          href="#"
-          className="font-display text-base font-bold tracking-tight text-white"
-          data-cursor
-        >
-          LYS<span className="gradient-text">.</span>
+        <a href="#" className="font-display text-sm font-semibold tracking-tight text-white">
+          LYS<span className="text-zinc-500">.</span>
         </a>
 
-        <div className="hidden items-center gap-1 md:flex">
+        <div className="hidden items-center gap-0.5 md:flex">
           {links.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              data-cursor
-              className={`relative rounded-xl px-3 py-1.5 text-xs font-medium transition-all duration-200 ${
+              className={`relative rounded-lg px-3 py-1.5 text-xs font-medium transition-all duration-200 ${
                 active === link.href
-                  ? "bg-white/8 text-cyan-300"
-                  : "text-white/50 hover:text-white/80"
+                  ? "bg-white/[0.06] text-white"
+                  : "text-zinc-500 hover:text-zinc-300"
               }`}
             >
               {link.label}
-              {active === link.href && (
-                <span className="absolute bottom-0.5 left-1/2 h-0.5 w-3 -translate-x-1/2 rounded-full bg-cyan-400" />
-              )}
             </a>
           ))}
         </div>
 
         <a
           href="#contact"
-          data-cursor
-          className="hidden rounded-xl bg-gradient-to-r from-cyan-500/20 to-purple-500/20 px-4 py-1.5 text-xs font-medium text-cyan-300 ring-1 ring-cyan-400/30 transition hover:ring-cyan-400/60 md:block"
+          className="hidden rounded-lg border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs font-medium text-zinc-300 transition hover:bg-white/[0.08] hover:text-white md:block"
         >
           联系我
         </a>

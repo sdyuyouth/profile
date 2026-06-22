@@ -3,10 +3,8 @@ import type { PositionRelevance } from "@/data/idealPositions"
 import { PositionContext } from "@/context/PositionContext"
 import { useLenis } from "@/hooks/useLenis"
 import { AmbientBackground } from "@/components/layout/AmbientBackground"
-import { CustomCursor } from "@/components/layout/CustomCursor"
 import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
-import { MouseGlow } from "@/components/layout/MouseGlow"
 import { Hero } from "@/components/sections/Hero"
 import { About } from "@/components/sections/About"
 import { IdealPositions } from "@/components/sections/IdealPositions"
@@ -22,8 +20,6 @@ function AppContent() {
     <>
       <AmbientBackground />
       <div className="noise-overlay" aria-hidden />
-      <CustomCursor />
-      <MouseGlow />
       <Navbar />
       <main>
         <Hero />

@@ -14,11 +14,11 @@ export function About() {
       if (reduced) return
       gsap.from(".about-left", {
         scrollTrigger: { trigger: contentRef.current, start: "top 75%" },
-        opacity: 0, x: -40, duration: 0.8, ease: "power3.out",
+        opacity: 0, x: -30, duration: 0.7, ease: "power3.out",
       })
       gsap.from(".about-right", {
         scrollTrigger: { trigger: contentRef.current, start: "top 75%" },
-        opacity: 0, x: 40, duration: 0.8, ease: "power3.out", delay: 0.15,
+        opacity: 0, x: 30, duration: 0.7, ease: "power3.out", delay: 0.1,
       })
     },
     { scope: contentRef, dependencies: [reduced] },
@@ -35,53 +35,39 @@ export function About() {
   const tags = ["外贸 B2B", "AI Agent", "Vibe Coding", "全栈工程", "SEO 建站", "Serverless", "RPA 自动化"]
 
   return (
-    <Section
-      id="about"
-      index="01"
-      label="About"
-      title="关于我"
-      subtitle="从外贸业务到 AI Agent 全栈交付"
-    >
-      <div ref={contentRef} className="grid gap-12 md:grid-cols-[300px_1fr] md:gap-20">
+    <Section id="about" index="01" label="About" title="关于我" subtitle="从外贸业务到 AI Agent 全栈交付">
+      <div ref={contentRef} className="grid gap-12 md:grid-cols-[280px_1fr] md:gap-16">
         <div className="about-left flex flex-col items-center md:items-start">
-          <div className="avatar-ring relative flex h-52 w-52 items-center justify-center rounded-3xl bg-[#030014]">
-            <div className="relative flex h-[calc(100%-6px)] w-[calc(100%-6px)] items-center justify-center rounded-[22px] bg-[#0a0520]">
-              <span className="font-display text-6xl font-black gradient-text">LYS</span>
-              <div
-                className="absolute inset-0 rounded-[22px] opacity-30"
-                style={{
-                  background: "radial-gradient(circle at 30% 30%, rgba(0,240,255,0.2), transparent 60%)",
-                }}
-              />
-            </div>
+          <div className="avatar-ring relative flex h-48 w-48 items-center justify-center rounded-2xl bg-[#111113]">
+            <span className="font-display text-5xl font-bold text-white">LYS</span>
           </div>
 
-          <div className="mt-8 w-full space-y-0 overflow-hidden rounded-2xl glass-card">
+          <div className="mt-8 w-full overflow-hidden rounded-xl glass-card">
             {infoItems.map((item, i) => (
               <div
                 key={item.label}
                 className={`flex justify-between px-4 py-3 text-sm ${
-                  i !== infoItems.length - 1 ? "border-b border-white/5" : ""
+                  i !== infoItems.length - 1 ? "border-b border-white/[0.06]" : ""
                 }`}
               >
-                <span className="font-mono text-[11px] tracking-wider text-white/35 uppercase">
+                <span className="font-mono text-[11px] tracking-wider text-zinc-600 uppercase">
                   {item.label}
                 </span>
-                <span className="text-white/75">{item.value}</span>
+                <span className="text-zinc-300">{item.value}</span>
               </div>
             ))}
           </div>
         </div>
 
         <div className="about-right">
-          <blockquote className="relative border-l-2 border-cyan-400/40 pl-6">
-            <p className="text-xl leading-[1.8] text-white/75 md:text-2xl md:leading-[1.8]">
+          <blockquote className="relative border-l border-white/15 pl-6">
+            <p className="text-lg leading-[1.85] text-zinc-300 md:text-xl">
               {profile.summary}
             </p>
           </blockquote>
 
           <div className="mt-10">
-            <p className="font-mono mb-4 text-[10px] tracking-widest text-white/30 uppercase">
+            <p className="font-mono mb-4 text-[10px] tracking-widest text-zinc-600 uppercase">
               Core Focus
             </p>
             <div className="flex flex-wrap gap-2">

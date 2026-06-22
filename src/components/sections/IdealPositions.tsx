@@ -23,15 +23,11 @@ export function IdealPositions() {
       return
     }
     gsap.to(detailRef.current, {
-      opacity: 0, y: 12, duration: 0.18,
+      opacity: 0, y: 8, duration: 0.15,
       onComplete: () => {
         setSelectedId(id)
         setActivePositionId(id)
-        gsap.fromTo(
-          detailRef.current,
-          { opacity: 0, y: -12 },
-          { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" },
-        )
+        gsap.fromTo(detailRef.current, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3 })
       },
     })
   }
@@ -41,7 +37,7 @@ export function IdealPositions() {
       if (reduced) return
       gsap.from(".position-tab", {
         scrollTrigger: { trigger: "#ideal-positions", start: "top 75%" },
-        opacity: 0, x: -30, stagger: 0.1, duration: 0.6,
+        opacity: 0, x: -20, stagger: 0.08, duration: 0.5,
       })
     },
     { dependencies: [reduced] },
@@ -56,43 +52,34 @@ export function IdealPositions() {
       subtitle="小满科技 · Vibe Coding 优先"
     >
       <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
-        <div className="flex flex-col gap-3 lg:w-72 shrink-0">
+        <div className="flex flex-col gap-2 lg:w-72 shrink-0">
           {positions.map((pos) => {
             const isActive = pos.id === selectedId
-            const priorityStyles = [
-              "opacity-100 scale-100",
-              "opacity-85 scale-[0.98]",
-              "opacity-70 scale-[0.96]",
-            ]
-
             return (
               <button
                 key={pos.id}
                 type="button"
-                data-cursor
                 onClick={() => handleSelect(pos.id as PositionRelevance)}
-                className={`position-tab text-left rounded-2xl p-5 transition-all duration-300 ${priorityStyles[pos.priority - 1]} ${
-                  isActive ? "glass-card-highlight" : "glass-card hover:border-white/15"
-                }`}
+                className={`position-tab text-left rounded-xl p-4 transition-all duration-200 ${
+                  isActive ? "glass-card-highlight" : "glass-card hover:border-white/12"
+                } ${pos.priority > 1 ? "opacity-80" : ""}`}
               >
-                <div className="mb-3 flex items-center gap-2.5">
+                <div className="mb-2 flex items-center gap-2">
                   <span
-                    className={`flex h-7 w-7 items-center justify-center rounded-lg font-display text-xs font-bold ${
+                    className={`flex h-6 w-6 items-center justify-center rounded-md font-mono text-[10px] font-medium ${
                       pos.priority === 1
-                        ? "bg-gradient-to-br from-cyan-400 to-purple-500 text-white shadow-[0_0_16px_rgba(0,240,255,0.4)]"
-                        : "bg-white/8 text-white/50"
+                        ? "bg-white text-zinc-900"
+                        : "bg-white/8 text-zinc-500"
                     }`}
                   >
                     0{pos.priority}
                   </span>
                   {pos.salary && (
-                    <span className="font-mono text-[10px] text-cyan-400/80">{pos.salary}</span>
+                    <span className="font-mono text-[10px] text-zinc-500">{pos.salary}</span>
                   )}
                 </div>
-                <h3 className="font-display text-sm font-bold leading-snug text-white">
-                  {pos.title}
-                </h3>
-                <p className="mt-1.5 font-mono text-[10px] text-white/35">
+                <h3 className="text-sm font-semibold leading-snug text-white">{pos.title}</h3>
+                <p className="mt-1 font-mono text-[10px] text-zinc-600">
                   {pos.company}{pos.location ? ` · ${pos.location}` : ""}
                 </p>
               </button>
@@ -100,36 +87,31 @@ export function IdealPositions() {
           })}
         </div>
 
-        <div
-          ref={detailRef}
-          className="glass-card-highlight flex-1 rounded-2xl p-7 md:p-9"
-        >
-          <p className="text-base leading-relaxed text-white/55">{selected.tagline}</p>
+        <div ref={detailRef} className="glass-card-highlight flex-1 rounded-2xl p-7 md:p-8">
+          <p className="text-sm leading-relaxed text-zinc-400">{selected.tagline}</p>
 
           <div className="mt-8 grid gap-8 md:grid-cols-2">
             <div>
-              <h4 className="mb-5 flex items-center gap-2 font-mono text-[10px] tracking-widest text-cyan-400 uppercase">
-                <span className="h-px w-4 bg-cyan-400/60" />
+              <h4 className="mb-4 font-mono text-[10px] tracking-widest text-zinc-500 uppercase">
                 岗位亮点
               </h4>
               <ul className="space-y-3">
                 {selected.highlights.map((h) => (
-                  <li key={h} className="flex gap-3 text-sm leading-relaxed text-white/65">
-                    <span className="mt-0.5 shrink-0 font-mono text-cyan-400">→</span>
+                  <li key={h} className="flex gap-2.5 text-sm leading-relaxed text-zinc-400">
+                    <span className="shrink-0 text-zinc-600">—</span>
                     {h}
                   </li>
                 ))}
               </ul>
             </div>
             <div>
-              <h4 className="mb-5 flex items-center gap-2 font-mono text-[10px] tracking-widest text-purple-400 uppercase">
-                <span className="h-px w-4 bg-purple-400/60" />
+              <h4 className="mb-4 font-mono text-[10px] tracking-widest text-zinc-500 uppercase">
                 我的匹配
               </h4>
               <ul className="space-y-3">
                 {selected.matchPoints.map((m) => (
-                  <li key={m} className="flex gap-3 text-sm leading-relaxed text-white/65">
-                    <span className="mt-0.5 shrink-0 text-purple-400">✓</span>
+                  <li key={m} className="flex gap-2.5 text-sm leading-relaxed text-zinc-400">
+                    <span className="shrink-0 text-zinc-500">✓</span>
                     {m}
                   </li>
                 ))}
@@ -137,12 +119,8 @@ export function IdealPositions() {
             </div>
           </div>
 
-          <div className="mt-8 border-t border-white/5 pt-6">
-            <a
-              href="mailto:jobs@xiaoman.cn"
-              className="btn-ghost text-xs"
-              data-cursor
-            >
+          <div className="mt-8 border-t border-white/[0.06] pt-6">
+            <a href="mailto:jobs@xiaoman.cn" className="btn-ghost text-xs">
               投递小满 · jobs@xiaoman.cn
             </a>
           </div>
